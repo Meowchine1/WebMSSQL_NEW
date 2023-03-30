@@ -1,0 +1,5 @@
+﻿@using WebMSSQL.Models
+@foreach (ChatMessages message in ViewBag.chatMessages)
+{
+    <p> @message.Text [ @message.dateTime ]</p>
+}

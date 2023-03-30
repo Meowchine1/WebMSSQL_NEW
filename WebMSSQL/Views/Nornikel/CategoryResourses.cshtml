@@ -1,0 +1,24 @@
+﻿@using WebMSSQL.Models
+@{
+    Layout = "Master.cshtml";
+}
+ 
+
+<div>
+   <h1 align="center">@ViewBag.category.Name</h1>  
+    
+</div>
+ @foreach(Resourses r in ViewBag.Resourses)
+    {
+<form action="/Nornikel/BuyProduct/@r.Id">
+    
+        <a href = "/Nornikel/Resourse/@r.Id">
+            <h2 align="center">@r.name</h2>
+        </a>
+        <p class="pic">
+            <img src = "/images/@(r.Id).jpg" alt = "@r.name" width="200" height="200">
+            <button align="center" name="popup-button">Buy</button>
+        </p>
+       
+</form>
+    }

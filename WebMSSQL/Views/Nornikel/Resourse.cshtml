@@ -1,0 +1,93 @@
+﻿@{
+    Layout = "Master.cshtml";
+}
+@using WebMSSQL.Models
+ 
+<div>
+       <h2 align="center" >@ViewBag.Resourse.name</h2>
+        <p class="pic">
+       <img src = "/images/@(ViewBag.Resourse.Id).jpg" alt = "@ViewBag.Resourse.name"  width="200" height="200"/>
+        </p>
+       <p  align="center" >@ViewBag.Resourse.description</p>
+       
+
+       <div id="messages"> </div>
+    
+          <div>
+               <label >Your name</label>
+              <input type="text" id="name"/>
+                <form id="commentForm">
+                    <div>
+                        <label for="comment">Your comment</label>
+                    </div>
+                    <div>
+                        <textarea name="comment" id="comment"></textarea>
+                    </div>
+                    <button type="button" name="button" id="send" >Отправить</button>
+                </form>
+            </div>
+
+        </div>
+
+<script>
+    const allComments = document.getElementById("messages");
+    const newComment = document.getElementById("comment");
+    const commentAuthor = document.getElementById("name");
+    const btnSend = document.getElementById("send");
+    
+    btnSend.addEventListener("click" , () => {
+        var oReq = new XMLHttpRequest();
+        var url = "/Chat/AddMessage?";
+        var params = "message=" + newComment.value + "&categoryId=" + @(ViewBag.Resourse.Id) + "&author=" + commentAuthor.value;
+        console.log(params)
+        oReq.open('POST', url, true);
+        oReq.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        oReq.send(params)
+
+        newComment.value = "";
+        commentAuthor.value = "";
+        
+    });
+
+       function reqListener () {
+            allComments.innerHTML = '';
+            const data = JSON.parse(this.responseText);
+            for (msg of data) {
+                console.log(`<p>[ ${msg.name} ]: ${msg.text}  (${msg.dateTime})</p>`)
+                 allComments.insertAdjacentHTML('afterbegin', `<p>[ ${msg.name} ]: ${msg.text}  (${msg.dateTime})</p>`); 
+            }
+                      
+        }
+
+        setInterval(() => {                  
+              var oReq = new XMLHttpRequest();
+              var url = "/Chat/Messages?categoryId=" + @(ViewBag.Resourse.Id);
+              oReq.addEventListener("load", reqListener);
+              oReq.open("GET", url, true );
+              oReq.send();
+            }, 2000);
+
+
+
+    //const comment = document.getElementById("comment");
+
+    //var login = comment.value;
+    //var xhr = new XMLHttpRequest();
+    //var body = "login="+ login;
+    //xhr.open("POST", "/Chat/AddMessage");
+
+    //xhr.send(body);
+    //xhr.onreadystatechange = (() => {
+    //    console.log(xhr.responseText);
+    //});
+
+    //const addMessageFrame = document.getElementById("addMessageFrame");
+
+    //let display = document.querySelector('#comment'); 
+    //    display.addEventListener('change', () =>{ 
+    //    addMessageFrame.src = "/Chat/AddMessage?message=" + Message.value; 
+    //    })
+
+</script>
+
+
