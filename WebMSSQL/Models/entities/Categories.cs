@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebMSSQL.Models
+namespace WebMSSQL.Models.entities
 {
     public class Categories
     {

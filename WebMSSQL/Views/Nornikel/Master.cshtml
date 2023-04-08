@@ -1,4 +1,4 @@
-﻿@using WebMSSQL.Models
+﻿@using WebMSSQL.Models.entities
 
 <!DOCTYPE html>
 <html lang="en">
@@ -109,8 +109,6 @@
             <div class="col-10">
               <nav class="site-navigation text-right" role="navigation"> <!---------->
                     <!-- Load icon library -->
-
-                      
                    <form method="post" action="/Nornikel/Search/">
                     <p>
                         <input type="text" name="request" />
@@ -122,7 +120,11 @@
                 </form>
 
                 <div class="container">
-                    
+
+                 <form  method="post"  action="/Account/Logout">
+                     <button type="submit">Logout</button>
+                 </form>
+
                   <div class="d-inline-block d-lg-none ml-md-0 mr-auto py-3"><a href="#" class="site-menu-toggle js-menu-toggle text-black"><span class="icon-menu h3"></span></a></div>
                        
                   <ul class="site-menu js-clone-nav d-none d-lg-block">
@@ -219,7 +221,7 @@
           <div class="col-md-12">
             <p>
             <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-            Copyright &copy; <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>document.write(new Date().getFullYear());</script> All Rights Reserved | This template is made with <i class="icon-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >Colorlib</a>
+            Copyright &copy; <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></p><script>document.write(new Date().getFullYear());</script> All Rights Reserved | This template is made with <i class="icon-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >Colorlib</a>
             <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
             </p>
           </div>

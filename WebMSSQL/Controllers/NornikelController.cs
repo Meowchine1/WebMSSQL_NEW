@@ -1,57 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using WebMSSQL.Models;
-using System.Diagnostics;
-using TelegramBot;
+using WebMSSQL.Models.entities;
+using WebMSSQL.BA;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+
 namespace NorilskNikel.Controllers
 {
+    //   [Authorize]
     public class NornikelController : Controller
     {
+        BuisnessService service = new BuisnessService();
 
-        public IActionResult Registration(string login, string password, string repeatPassword, string telegramCode) 
-        {
-
-            if (password.Equals(repeatPassword)) {
-
-                if (DbData.IsLoginFree(login) && DbData.IsLoginCorrect(login)) 
-                {
-
-                    string realCode = DbConnection.getUserCode();
-                    if (realCode.Equals(telegramCode)) 
-                    {
-                        DbData.Registration(login, password);
-
-                        ViewBag.Categories = DbData.GetCategories();
-
-                        return View("Index");
-                    }
-                    
-                }
-                 
-            }
-            return Redirect("/Start/StartUp");
-
-        }
-
-        public IActionResult Login(string login, string password)
-        {
-            ViewBag.Categories = DbData.GetCategories();
-            return DbData.Login(login, password) ? View("Index") : View("Startup");
-        }       
-        
         public IActionResult Index(int categoryId)
         {
 
-            ViewBag.Categories = DbData.GetCategories();
+            ViewBag.Categories = service.GetCategories();
         
 
             if (categoryId == 0)
             {
-                ViewBag.Resourses = DbData.GetResourses();
+                ViewBag.Resourses = service.GetResourses();
             }
             else
             {
-                ViewBag.Resourses = DbData.GetResourses(categoryId);
+                ViewBag.Resourses = service.GetResourses(categoryId);
 
             }
 
@@ -61,13 +33,13 @@ namespace NorilskNikel.Controllers
 
         public IActionResult Resourse(int Id) {
 
-            Resourses r = DbData.GetResourse(Id);
+            Resourses r = service.GetResourse(Id);
             if (r == MockObjects.resourse)
             {
                 return NotFound();
             }
 
-            ViewBag.Categories = DbData.GetCategories();
+            ViewBag.Categories = service.GetCategories();
             ViewBag.Resourse = r;
 
             return View();
@@ -77,7 +49,7 @@ namespace NorilskNikel.Controllers
 
         public IActionResult CategoryResourses(int Id) {
 
-            Categories category = DbData.GetCategories(Id);
+            Categories category = service.GetCategories(Id);
  
             if (category == MockObjects.category)
             {
@@ -85,8 +57,8 @@ namespace NorilskNikel.Controllers
             }
 
             ViewBag.Category = category;
-            ViewBag.Categories = DbData.GetCategories();
-            ViewBag.Resourses = DbData.GetResourses(Id);
+            ViewBag.Categories = service.GetCategories();
+            ViewBag.Resourses = service.GetResourses(Id);
 
             return View();
            
@@ -94,12 +66,12 @@ namespace NorilskNikel.Controllers
 
 
         public IActionResult BuyProduct(int Id) {
-            Resourses r = DbData.GetResourse(Id);
+            Resourses r = service.GetResourse(Id);
             if (r == MockObjects.resourse)
             {
                 return NotFound();
             }
-            ViewBag.Categories = DbData.GetCategories();
+            ViewBag.Categories = service.GetCategories();
             ViewBag.Resourse = r;
             return View("BuyProduct");
           
@@ -117,14 +89,14 @@ namespace NorilskNikel.Controllers
             if (request == null)
             {
                 ViewBag.flag = false;
-                ViewBag.Categories = DbData.GetCategories();
+                ViewBag.Categories = service.GetCategories();
             }
             else
             {
-                var result = DbData.SearchResourses(request.ToLower());
+                var result = service.SearchResourses(request.ToLower());
                 ViewBag.result = result;
                 ViewBag.flag = (result.Count() != 0)? true : false ;
-                ViewBag.Categories = DbData.GetCategories();
+                ViewBag.Categories = service.GetCategories();
             }
 
             return View();
@@ -132,7 +104,7 @@ namespace NorilskNikel.Controllers
         }
 
 
-        public Resourses BestResourses() => DbData.GetRandomResourse();
-     
+        public Resourses BestResourses() => service.GetRandomResourse();
+
     }
 }

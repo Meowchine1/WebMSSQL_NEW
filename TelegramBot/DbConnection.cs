@@ -17,10 +17,12 @@ namespace TelegramBot
         }
 
 
-        public static String getUserCode()
+        public static String getUserCode() //
         {
             var userRecord = db.telegramCodes.ToList().LastOrDefault();
             return userRecord.code;
         }
+
+        
     }
 }

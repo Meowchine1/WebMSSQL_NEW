@@ -1,4 +1,4 @@
-﻿namespace WebMSSQL.Models
+﻿namespace WebMSSQL.Models.entities
 {
     public static class MockObjects
     {

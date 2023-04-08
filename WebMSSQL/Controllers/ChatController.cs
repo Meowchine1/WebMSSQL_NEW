@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebMSSQL.Models;
+using WebMSSQL.Models.entities;
 
 namespace NorilskNikel.Controllers
 {

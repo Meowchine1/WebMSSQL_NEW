@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace WebMSSQL.Models
+namespace WebMSSQL.Models.entities
 {
     public static class HashPassword
     {
@@ -22,7 +22,8 @@ namespace WebMSSQL.Models
             return Convert.ToBase64String(hashBytes);
         }
 
-        public static bool Verify(string savedPasswordHash, string inputPassword) {
+        public static bool Verify(string savedPasswordHash, string inputPassword)
+        {
 
             byte[] hashBytes = Convert.FromBase64String(savedPasswordHash);
             /* Get the salt */

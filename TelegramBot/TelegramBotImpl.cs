@@ -34,6 +34,7 @@ namespace TelegramBot
             }
         }
 
+
         public static async Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
         {
             // Данный Хендлер получает ошибки и выводит их в консоль в виде JSON

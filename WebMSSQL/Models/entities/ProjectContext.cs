@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-namespace WebMSSQL.Models
+
+namespace WebMSSQL.Models.entities
 {
     public class ProjectContext : DbContext
     {
@@ -7,14 +8,14 @@ namespace WebMSSQL.Models
         public DbSet<Categories> categories { get; set; }
         public DbSet<Resourses> resourses { get; set; }
         public DbSet<ChatMessages> chatMessages { get; set; }
-   
+
 
         public ProjectContext(DbContextOptions<ProjectContext> options)
            : base(options)
         {
             Database.EnsureCreated();   // создаем базу данных при первом обращении
         }
-       
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder
             optionsBuilder)
@@ -29,18 +30,18 @@ namespace WebMSSQL.Models
         {
 
             modelBuilder.Entity<Categories>().HasData(
-                new Categories[] { 
-                
+                new Categories[] {
+
                     new Categories{Id = 1, Key = 1, Name="Metal", Article="ddd", Description="Твердое вещество " },
                     new Categories{Id = 2, Key = 2, Name="Brilliant", Article="hjv,jjkjkh", Description="Красивый камушек" }
 
                 }
                 );
 
-           modelBuilder.Entity<Resourses>().HasData(
+            modelBuilder.Entity<Resourses>().HasData(
 
-                 new Resourses[]
-                {
+                  new Resourses[]
+                 {
                      new Resourses { Id = 1, name = "Yrilski Palalladiy",
                          description = "Palladium is a chemical element with the symbol Pd and atomic number 46." +
                          " It is a rare and lustrous silvery-white metal discovered in 1803 by the English chemist William Hyde Wollaston." +
@@ -108,9 +109,9 @@ namespace WebMSSQL.Models
                         " The absorption spectrum of boron causes these gems to absorb red, orange, and yellow light, lending Type IIb diamonds a light blue or grey color," +
                         " though examples with low levels of boron impurities can also be colorless."
                     , path = "typeIIb" , CategoryId = 2},
-                }
+                 }
 
-                );
+                 );
 
         }
 
