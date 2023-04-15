@@ -6,12 +6,12 @@ namespace TelegramBot
     {
         [Key]
         public int Id { get; set; }
-        public String login  { get; set; }
-        public String code { get; set; } 
+        public string chatId  { get; set; }
+        public string code { get; set; } 
 
-        public TelegramCode(string login, string code)
+        public TelegramCode(string chatId, string code)
         {
-            this.login = login;
+            this.chatId = chatId;
             this.code = code;
         }
 

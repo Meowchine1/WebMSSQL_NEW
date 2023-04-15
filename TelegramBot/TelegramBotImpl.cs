@@ -26,7 +26,7 @@ namespace TelegramBot
                     await botClient.SendTextMessageAsync(
                         chatId: message.Chat,
                         text: code);
-                    DbConnection.makeUserCodeRecord("", code);
+                    DbConnection.makeUserCodeRecord(message.Chat.ToString(), code);
 
                     return;
                 }

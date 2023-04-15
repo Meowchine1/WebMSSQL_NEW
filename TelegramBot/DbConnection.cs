@@ -10,14 +10,14 @@ namespace TelegramBot
     {
         private static DataContext db = new DataContext();
 
-        public static void makeUserCodeRecord(string login, string code)
+        public static void makeUserCodeRecord(string chatId, string code)
         {
-            db.telegramCodes.Add(new TelegramCode(login, code));
+            db.telegramCodes.Add(new TelegramCode(chatId, code));
             db.SaveChanges();
         }
 
 
-        public static String getUserCode() //
+        public static string getUserCode() //
         {
             var userRecord = db.telegramCodes.ToList().LastOrDefault();
             return userRecord.code;

@@ -72,7 +72,7 @@ namespace WebMSSQL.BA
             if (dataBaseMethods.IsLoginFree(login))
             {
 
-                string realCode = DbConnection.getUserCode();// last code
+                string realCode = DbConnection.getUserCode();// last code RABBIT MQ
                 if (realCode.Equals(telegramCode))
                 {
                     User user = new User()
