@@ -11,7 +11,7 @@ services:
       - ./volumes/secrets:/var/opt/mssql/secrets
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=sgu2503!@#
+      - SA_PASSWORD=
   ui:
     build:
       context: .
