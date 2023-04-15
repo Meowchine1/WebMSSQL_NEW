@@ -8,6 +8,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["WebMSSQL/WebMSSQL.csproj", "WebMSSQL/"]
+COPY ["TelegramBot/TelegramBot.csproj", "TelegramBot/"]
 RUN dotnet restore "WebMSSQL/WebMSSQL.csproj"
 COPY . .
 WORKDIR "/src/WebMSSQL"
@@ -20,3 +21,7 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "WebMSSQL.dll"]
+
+#docker build  -t testcontainer -f WebMSSQL/Dockerfile .
+# docker run -p 50001:80 -d testcontainer
+# второй проект тож добавить
