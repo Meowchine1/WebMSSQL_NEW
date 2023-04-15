@@ -12,7 +12,7 @@ namespace WebMSSQL.BA
             factory.UserName = "";
             factory.Password = "";
             factory.Port = 5672;
-            factory.HostName = "localhost";
+            factory.HostName = "rabbitmq";
             factory.VirtualHost = "/";
 
             return factory.CreateConnection();

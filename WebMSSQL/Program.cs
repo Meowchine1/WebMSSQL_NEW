@@ -18,7 +18,7 @@ var builder = WebApplication.CreateBuilder();
 
 // получаем строку подключения из файла конфигурации
 string connection = builder.Configuration.GetConnectionString("MSSQLString");
-string localConnection = builder.Configuration.GetConnectionString("LocalConnectionString");
+string localConnection = builder.Configuration.GetConnectionString("MSSQLString");
 
 // Add services to the container.
 builder.Services.AddHangfire(conf => 

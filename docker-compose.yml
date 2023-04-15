@@ -11,7 +11,7 @@ services:
       - ./volumes/secrets:/var/opt/mssql/secrets
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=
+      - SA_PASSWORD=12345kate
   ui:
     build:
       context: .
