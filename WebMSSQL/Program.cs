@@ -1,13 +1,8 @@
 using Hangfire;
+using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Security.Claims;
 using WebMSSQL.Models.entities;
-
 
 // cделать отправку одноразового кода по никнейму в телеграмм и использовать rabbit mq
 // hangfire можно подключить к контроллеру наверно прямо в контроллере
@@ -18,12 +13,14 @@ var builder = WebApplication.CreateBuilder();
 
 // получаем строку подключения из файла конфигурации
 string connection = builder.Configuration.GetConnectionString("MSSQLString");
-string localConnection = builder.Configuration.GetConnectionString("MSSQLString");
+string localConnection = builder.Configuration.GetConnectionString("LocalConnectionString");
 
 // Add services to the container.
-builder.Services.AddHangfire(conf => 
-conf.UseSqlServerStorage(localConnection));
-builder.Services.AddHangfireServer();
+////builder.Services.AddHangfire(conf => 
+////conf.UseSqlServerStorage(localConnection));
+////builder.Services.AddHangfireServer();
+///
+builder.Services.AddHangfire(c => c.UseMemoryStorage()); JobStorage.Current = new MemoryStorage();
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ProjectContext>(options =>
     options.UseSqlServer(connection));
@@ -50,7 +47,7 @@ if (!app.Environment.IsDevelopment())
  
 //app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseHangfireServer();
 app.UseHangfireDashboard("/dashboard");
 app.UseRouting();
  
@@ -63,15 +60,6 @@ app.UseEndpoints(endpoints =>
     app.MapControllerRoute(
     name: "startupPage",
     pattern: "{controller=Account}/{action=Login}/{id?}");
-
-    //app.MapControllerRoute(
-    //name: "default",
-    //pattern: "{controller=Nornikel}/{action=Index}/{id?}");
-
-    //app.MapControllerRoute( //MapAreaControllerRoute
-    //    name: "admin",
-    //    pattern: "{area:exists}/{controller=Nornikel}/{action=Index}/{id?}");
-
 }
     );
 

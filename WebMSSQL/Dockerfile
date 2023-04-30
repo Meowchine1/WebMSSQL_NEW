@@ -8,7 +8,6 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["WebMSSQL/WebMSSQL.csproj", "WebMSSQL/"]
-COPY ["TelegramBot/TelegramBot.csproj", "TelegramBot/"]
 RUN dotnet restore "WebMSSQL/WebMSSQL.csproj"
 COPY . .
 WORKDIR "/src/WebMSSQL"

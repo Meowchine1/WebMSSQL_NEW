@@ -20,7 +20,7 @@ namespace WebMSSQL.Models.entities
         protected override void OnConfiguring(DbContextOptionsBuilder
             optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=localhost;Database=NORNIKEL;Trusted_Connection=True;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer("Server=mssql;Database=nornikelDB;Trusted_Connection=True;TrustServerCertificate=True");
         }
 
         public ProjectContext() { }

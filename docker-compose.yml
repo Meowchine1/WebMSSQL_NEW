@@ -10,7 +10,7 @@ services:
       - ./volumes/log:/var/opt/mssql/log
       - ./volumes/secrets:/var/opt/mssql/secrets
     environment:
-      - ACCEPT_EULA=Y
+      - ACCEPT_EULA=sa
       - SA_PASSWORD=12345kate
   ui:
     build:
@@ -18,19 +18,22 @@ services:
       dockerfile: WebMSSQL/Dockerfile
     ports:
       - 5001:80
+    environment:
+        - CONNECTION_STRING=Server=mssql,1433;Database=nornikelDB;User Id=sa;Password=12345kate;
 
   telegram:
+    restart: always
     build:
       context: .
       dockerfile: TelegramBot/Dockerfile
     ports:
-      - 5002:80
+      - 5003:81
+ 
 #rabbitmq:
 #    image: \${DECISIONBRAIN_REGISTRY}/rabbitmq-stomp:\${DBOS_RABBITMQ_VERSION}
 #    restart: always
 #    ports:
 #    - 5672:5672  #amqp port
-#    - 61613:61613 #stomp port
 #    - 15672:15672 # management web console
 #    networks:
 #    - optimserver

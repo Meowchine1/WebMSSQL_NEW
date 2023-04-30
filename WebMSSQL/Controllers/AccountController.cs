@@ -34,7 +34,7 @@ namespace WebMSSQL.Controllers
                 }
                 ModelState.AddModelError("", response.Description);
             }
-            return View("~/Views/Norniel/Index.cshtml", model);
+            return View("~/Views/Nornikel/Index.cshtml", model);
            
         }
 

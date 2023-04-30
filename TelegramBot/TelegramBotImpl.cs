@@ -9,7 +9,7 @@ namespace TelegramBot
 {
     public static class TelegramBotImpl
     {
-        private static ITelegramBotClient _bot = new TelegramBotClient("5765340660:AAFjuHk43EfzU4hp_TSXaxffTytynaKAWTo");
+        private static ITelegramBotClient _bot = new TelegramBotClient("6050209391:AAHn76hPAhja9Rnz9FlyCx9eemkIhyawznU");
 
         public static async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
@@ -56,8 +56,11 @@ namespace TelegramBot
                 receiverOptions,
                 cancellationToken
             );
+
             Console.ReadLine();
 
         }
+
+ 
     }
 }
