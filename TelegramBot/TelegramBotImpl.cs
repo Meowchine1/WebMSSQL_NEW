@@ -4,6 +4,9 @@ using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types;
 using System.Runtime.CompilerServices;
 using System.Data.Common;
+using System.Text;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 
 namespace TelegramBot
 {
@@ -35,6 +38,7 @@ namespace TelegramBot
         }
 
 
+
         public static async Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
         {
             // Данный Хендлер получает ошибки и выводит их в консоль в виде JSON
@@ -56,7 +60,11 @@ namespace TelegramBot
                 receiverOptions,
                 cancellationToken
             );
-            Console.ReadLine();
+       
+                 
+          
+           
+         
 
         }
     }

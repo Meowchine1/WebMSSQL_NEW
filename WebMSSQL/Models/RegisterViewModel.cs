@@ -4,11 +4,14 @@ namespace WebMSSQL.Models
 {
     public class RegisterViewModel
     {
-        [Required(ErrorMessage ="Укажите имя")]
+        [Required(ErrorMessage ="Укажите логин")]
         [MaxLength(10, ErrorMessage ="Длина логина максимум 10 символов")]
         [MinLength(3, ErrorMessage ="Длина логина минимум 3 символа")]
         public string Login { get; set; }
 
+        [Required(ErrorMessage = "Укажите почту")]
+        public string email { get; set; }
+        
         [DataType(DataType.Password)]
         [Required(ErrorMessage ="Укажите пароль")]
         public string Password { get; set; }

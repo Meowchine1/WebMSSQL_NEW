@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Security.Claims;
+using WebMSSQL.Controllers;
 using WebMSSQL.Models.entities;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 
 // cделать отправку одноразового кода по никнейму в телеграмм и использовать rabbit mq
@@ -18,7 +20,7 @@ var builder = WebApplication.CreateBuilder();
 
 // получаем строку подключения из файла конфигурации
 string connection = builder.Configuration.GetConnectionString("MSSQLString");
-string localConnection = builder.Configuration.GetConnectionString("MSSQLString");
+string localConnection = builder.Configuration.GetConnectionString("LocalConnectionString");
 
 // Add services to the container.
 builder.Services.AddHangfire(conf => 
@@ -52,6 +54,9 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 
 app.UseHangfireDashboard("/dashboard");
+HangFireController hangFireController = new HangFireController();
+RecurringJob.AddOrUpdate(() => hangFireController.SendEmail("katevoronina128@gmail.com"), Cron.Minutely);
+app.UseHangfireServer();
 app.UseRouting();
  
 app.UseAuthentication();
@@ -63,14 +68,6 @@ app.UseEndpoints(endpoints =>
     app.MapControllerRoute(
     name: "startupPage",
     pattern: "{controller=Account}/{action=Login}/{id?}");
-
-    //app.MapControllerRoute(
-    //name: "default",
-    //pattern: "{controller=Nornikel}/{action=Index}/{id?}");
-
-    //app.MapControllerRoute( //MapAreaControllerRoute
-    //    name: "admin",
-    //    pattern: "{area:exists}/{controller=Nornikel}/{action=Index}/{id?}");
 
 }
     );

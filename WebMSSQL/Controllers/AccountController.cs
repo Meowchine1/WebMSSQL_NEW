@@ -29,6 +29,8 @@ namespace WebMSSQL.Controllers
                     var user = HttpContext.User.Identity;
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                         new ClaimsPrincipal(response.Data));
+                 
+                 
                     return RedirectToAction("Index", "Nornikel");
                 
                 }

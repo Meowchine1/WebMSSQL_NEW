@@ -1,7 +1,10 @@
 ﻿
 
 using Microsoft.IdentityModel.Tokens;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 using System.Security.Claims;
+using System.Text;
 using TelegramBot;
 using WebMSSQL.DA;
 using WebMSSQL.Models.entities;
@@ -65,14 +68,76 @@ namespace WebMSSQL.BA
 
         }//=> dataBaseMethods.Login(login, password);
 
-        public User GetUser(string login) => dataBaseMethods.GetUser(login);
+        private void sendMessageToTGbot() {
+            var factory = new ConnectionFactory();
+            factory.HostName = "localhost";
+
+            using (var connection = factory.CreateConnection())
+            {
+
+                using (var chanel = connection.CreateModel())
+                {
+                    chanel.QueueDeclare(queue: "telegram",
+                        exclusive: false,
+                        durable: true,
+                        autoDelete: false,
+                        arguments: null);
+                    var message = "get code";
+                    var body = Encoding.UTF8.GetBytes(message);
+
+                    chanel.BasicPublish(exchange: "",
+                        routingKey: "telegram",
+                        basicProperties: null,
+                        body: body);
+                }
+            }
+        }
+        private static string getMessageFromTg()
+        {
+            string result = "";
+            var factory = new ConnectionFactory();
+            factory.HostName = "localhost";
+
+            using (var connection = factory.CreateConnection())
+            {
+
+                using (var chanel = connection.CreateModel())
+                {
+                    chanel.QueueDeclare(queue: "web",
+                        exclusive: false,
+                        durable: true,
+                        autoDelete: false,
+                        arguments: null);
+
+                    var consumer = new EventingBasicConsumer(chanel);
+
+                    consumer.Received += (model, es) =>
+                    {
+
+                        var body = es.Body.ToArray();
+                        var message = Encoding.UTF8.GetString(body);
+                        result = message;
+
+                    };
+
+                    chanel.BasicConsume(queue: "web",
+                        autoAck: true,
+                        consumer: consumer);
+                }
+            }
+            return result;
+        }
+
+            public User GetUser(string login) => dataBaseMethods.GetUser(login);
 
         public async Task<BaseResponse<ClaimsIdentity>> Registration(string login, string password, string telegramCode)
         {
             if (dataBaseMethods.IsLoginFree(login))
             {
+                sendMessageToTGbot();
+                string realCode = getMessageFromTg();
 
-                string realCode = DbConnection.getUserCode();// last code RABBIT MQ
+
                 if (realCode.Equals(telegramCode))
                 {
                     User user = new User()

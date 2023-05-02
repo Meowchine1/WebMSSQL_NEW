@@ -1,4 +1,4 @@
-﻿version: '3.4'
+version: '3.4'
 
 services:
   mssql:
@@ -11,29 +11,10 @@ services:
       - ./volumes/secrets:/var/opt/mssql/secrets
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=12345kate
+      - SA_PASSWORD=sgu2503!@#
   ui:
     build:
       context: .
       dockerfile: WebMSSQL/Dockerfile
     ports:
       - 5001:80
-
-  telegram:
-    build:
-      context: .
-      dockerfile: TelegramBot/Dockerfile
-    ports:
-      - 5002:80
-#rabbitmq:
-#    image: \${DECISIONBRAIN_REGISTRY}/rabbitmq-stomp:\${DBOS_RABBITMQ_VERSION}
-#    restart: always
-#    ports:
-#    - 5672:5672  #amqp port
-#    - 61613:61613 #stomp port
-#    - 15672:15672 # management web console
-#    networks:
-#    - optimserver
-#    environment:
-#    - RABBITMQ_DEFAULT_USER=decisionbrain  # Adapt the credentials to your needs
-#    - RABBITMQ_DEFAULT_PASS=decisionbrain

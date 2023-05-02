@@ -1,37 +1,45 @@
 ﻿using Hangfire;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using MimeKit;
+using System.Net;
+using System.Net.Mail;
+using WebMSSQL.BA;
 
 namespace WebMSSQL.Controllers
 {
     public class HangFireController : Controller
     {
-        [HttpPost]
-        [Route("fire-and-forget")]
-        public IActionResult FireForget(string client)
+        public async Task<IActionResult> SendEmail(String email) {
+           await SendEmailAsync(email, "Welcome");
+            return new OkObjectResult(email);
+        }
+
+        public async Task SendEmailAsync(string email, string message)
         {
-            string jobId = BackgroundJob.Enqueue(() =>
-            Console.WriteLine($"{client}, thank you."));
+            try
+            {
+                MailMessage mailMessage = new MailMessage();
+                mailMessage.IsBodyHtml = true; //тело сообщения в формате HTML
+                mailMessage.From = new MailAddress("katevoronina128@gmail.com", "Hangfire"); //отправитель сообщения
+                mailMessage.To.Add("katevoronina128@gmail.com"); //адресат сообщения
+                mailMessage.Subject = "Сообщение от System.Net.Mail"; //тема сообщения
+                mailMessage.Body = message; 
+                mailMessage.Attachments.Add(new Attachment("... путь к файлу ...")); //добавить вложение к письму при необходимости
 
-            return Ok($"Job id {jobId}");
-        }
+                using (System.Net.Mail.SmtpClient client = new SmtpClient("smtp.gmail.com")) //используем сервера Google
+                {
+                    client.Credentials = new NetworkCredential("katevoronina128@gmail.com", "8962615kate"); //логин-пароль от аккаунта
+                    client.Port = 587; //порт 587 либо 465
+                    client.EnableSsl = true; //SSL обязательно
 
-        [HttpPost]
-        [Route("delayed")]
-        public IActionResult Delayed(string client) {
-
-            string jobId = BackgroundJob.Schedule(() =>
-            Console.WriteLine($"Session for client {client}  will be closed"), TimeSpan.FromSeconds(60));
-            return Ok($"Job id is {jobId}");
-        }
-
-        [HttpPost]
-        [Route("recurring")]
-        public IActionResult Recurring() {
-
-            RecurringJob.AddOrUpdate(() => Console.WriteLine("Good morning!"), Cron.Daily);
-
-            return Ok();
+                    client.Send(mailMessage);
+                }
+            }
+            catch (Exception e)
+            {
+            }
         }
 
     }
